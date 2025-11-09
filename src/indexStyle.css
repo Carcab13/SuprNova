@@ -4,11 +4,20 @@
     box-sizing: border-box;
 }
 
+html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     line-height: 1.6;
     color: #333;
     overflow-x: hidden;
+    font-size: 1rem;
+    width: 100%;
 }
 
 /* Navigation */
@@ -430,6 +439,10 @@ footer {
 
 /* Mobile */
 @media (max-width: 768px) {
+    html {
+        font-size: 15px;
+    }
+
     .nav-container {
         padding: 0 1rem;
     }
@@ -465,7 +478,7 @@ footer {
     .nav-links a {
         display: block;
         padding: 0.75rem 0;
-        font-size: 1.1rem;
+        font-size: 1rem;
         border-bottom: 1px solid #eee;
     }
 
@@ -474,7 +487,7 @@ footer {
     }
 
     .logo {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
 
     .hero {
@@ -484,12 +497,13 @@ footer {
     }
 
     .hero h1 {
-        font-size: 2rem;
+        font-size: 1.75rem;
         margin-bottom: 1rem;
+        line-height: 1.2;
     }
 
     .hero p {
-        font-size: 1.1rem;
+        font-size: 1rem;
         margin-bottom: 1.5rem;
     }
 
@@ -576,29 +590,44 @@ footer {
 
 /* Small Mobile */
 @media (max-width: 480px) {
+    html {
+        font-size: 14px;
+    }
+
+    body {
+        font-size: 0.875rem;
+    }
+
+    .hero {
+        padding: 1rem;
+        margin-top: 55px;
+        min-height: calc(100vh - 55px);
+    }
+
     .hero h1 {
-        font-size: 1.75rem;
+        font-size: 1.5rem;
+        line-height: 1.2;
     }
 
     .hero p {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 
     .cta-button {
         padding: 0.75rem 1.5rem;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
     }
 
     .features {
-        padding: 2.5rem 1rem;
+        padding: 2rem 0.75rem;
     }
 
     .about {
-        padding: 2.5rem 1rem;
+        padding: 2rem 0.75rem;
     }
 
     .projects {
-        padding: 2.5rem 1rem;
+        padding: 2rem 0.75rem;
     }
 
     .projects-grid {
@@ -606,24 +635,33 @@ footer {
     }
 
     .project-content {
-        padding: 1.25rem;
+        padding: 1rem;
     }
 
     .project-image {
-        height: 160px;
+        height: 150px;
         font-size: 2.5rem;
     }
 
     .project-card h3 {
-        font-size: 1.3rem;
+        font-size: 1.1rem;
+    }
+
+    .project-card p {
+        font-size: 0.85rem;
     }
 
     .contact {
-        padding: 2.5rem 1rem;
+        padding: 2rem 0.75rem;
+    }
+
+    .contact-content p {
+        font-size: 0.9rem;
     }
 
     .section-title {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
     }
 
     .feature-card {
@@ -635,7 +673,11 @@ footer {
     }
 
     .feature-card h3 {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+    }
+
+    .feature-card p {
+        font-size: 0.85rem;
     }
 
     .nav-container {
@@ -643,7 +685,35 @@ footer {
     }
 
     .logo {
+        font-size: 1.2rem;
+    }
+
+    footer {
+        padding: 1rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* Extra Small Mobile */
+@media (max-width: 360px) {
+    html {
+        font-size: 13px;
+    }
+
+    .hero h1 {
         font-size: 1.3rem;
+    }
+
+    .section-title {
+        font-size: 1.2rem;
+    }
+
+    .nav-container {
+        padding: 0 0.5rem;
+    }
+
+    .logo {
+        font-size: 1.1rem;
     }
 }
 
