@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuprNova - Home</title>
+    <link rel="stylesheet" href="./src/indexStyle.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">SuprNova</div>
+            <button class="menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Welcome to SuprNova</h1>
+            <p>Innovation Beyond the Stars</p>
+            <a href="#contact" class="cta-button">Contact</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <h2 class="section-title">About SuprNova</h2>
+            <div class="about-content">
+                <p>SuprNova is a forward-thinking company dedicated to delivering exceptional solutions and services. We combine innovation, expertise, and passion to help our clients achieve extraordinary results.</p>
+                <p>Our team of experts works tirelessly to ensure that every project exceeds expectations and sets new standards in the industry.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <div class="container">
+            <h2 class="section-title">Our Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">📋</div>
+                    <div class="project-content">
+                        <h3>NovaList</h3>
+                        <p>A easy and stylish wishlist system with reserve and other functions.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Web Development</span>
+                            <span class="project-tag">UI/UX Design</span>
+                            <span class="project-tag">Seasonal</span>
+                        </div>
+                        <a href="#contact" class="project-link">Request a custom wishlist</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">🖥️</div>
+                    <div class="project-content">
+                        <h3>NovaProxy</h3>
+                        <p>A scramjet-based website used to play games on school or work computer systems</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Web Development</span>
+                            <span class="project-tag">Bypass</span>
+                        </div>
+                        <a href="#contact" class="project-link">Request Link</a>
+                    </div>
+                </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2 class="section-title" style="color: white;">Get In Touch</h2>
+            <div class="contact-content">
+                <p>Ready to start your next project? We'd love to hear from you.</p>
+                <form action="https://api.web3forms.com/submit" method="POST" class="contact-form" id="contact-form">
+                    <input type="hidden" name="access_key" value="8f02d57e-1a27-4baf-b942-5c811829fecd">
+                    <input type="hidden" name="subject" value="New Contact Form Submission from SuprNova Website">
+                    <input type="hidden" name="from_name" value="SuprNova Contact Form">
+                    <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+                    
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <input type="email" name="email" placeholder="Your Email" required>
+                    <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+                    <button type="submit" id="submit-btn">Send Message</button>
+                    <div id="form-result" class="form-result"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 SuprNova. All rights reserved.</p>
+    </footer>
+
+    <script src="./src/indexScript.js"></script>
+</body>
+</html>
