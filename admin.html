@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuprNova - Admin Panel</title>
+    <link rel="stylesheet" href="./src/adminStyle.css">
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1>Wishlist Admin Panel</h1>
+            <a href="Carterswishlist.html" class="view-link">View Wishlist</a>
+        </header>
+
+        <!-- Add/Edit Form -->
+        <div class="form-section">
+            <h2 id="form-title">Add New Item</h2>
+            <form id="item-form">
+                <input type="hidden" id="edit-id" value="">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="item-id">Item ID *</label>
+                        <input type="text" id="item-id" required placeholder="e.g., item001">
+                        <small>Unique identifier for this item</small>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="item-title">Title *</label>
+                        <input type="text" id="item-title" required placeholder="Item name">
+                    </div>
+    
+                    <div class="form-group full-width">
+                        <label for="item-description">Description</label>
+                        <textarea id="item-description" rows="3" placeholder="Item description"></textarea>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="item-price">Price</label>
+                        <input type="text" id="item-price" placeholder="e.g., $22.49">
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="item-url">URL</label>
+                        <input type="url" id="item-url" placeholder="https://example.com/product">
+                    </div>
+    
+                    <div class="form-group full-width">
+                        <label for="item-image">Image URL</label>
+                        <input type="url" id="item-image" placeholder="https://example.com/image.jpg">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" id="submit-btn" class="btn btn-primary">Add Item</button>
+                    <button type="button" id="cancel-btn" class="btn btn-secondary" style="display: none;">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Items List -->
+        <div class="items-section">
+            <h2>Wishlist Items</h2>
+            <div id="loading-message" class="loading">Loading items...</div>
+            <div id="items-list" class="items-list"></div>
+        </div>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./src/adminScript.js"></script>
+</body>
+</html>
