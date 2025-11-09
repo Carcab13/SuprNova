@@ -22,62 +22,153 @@ function showNotification(message, type) {
     }, 3000);
 }
 
-// --- Image Display Logic ---
-document.addEventListener('DOMContentLoaded', () => {
-    const cards = document.querySelectorAll('.card[data-image]');
+// --- Load Wishlist Items from Supabase ---
+async function loadWishlistItems() {
+    const cardsContainer = document.getElementById('cards-container');
+    const loadingMessage = document.getElementById('loading-message');
 
-    cards.forEach(card => {
-        const imageUrl = card.dataset.image;
-        if (imageUrl) {
-            // Create image element
-            const img = document.createElement('img');
-            img.src = imageUrl;
-            img.alt = card.querySelector('h1')?.textContent || 'Item image';
-            img.className = 'card-image';
-            img.onerror = function() {
-                // Hide image if it fails to load
-                this.style.display = 'none';
-            };
-            
-            // Insert image at the beginning of the card (before the title)
-            const firstChild = card.firstElementChild;
-            if (firstChild) {
-                card.insertBefore(img, firstChild);
-            } else {
-                card.appendChild(img);
-            }
+    try {
+        // Fetch all wishlist items from Supabase
+        const { data: items, error } = await _supabase
+            .from('wishlist_items')
+            .select('*')
+            .order('created_at', { ascending: true });
+
+        if (error) {
+            throw error;
         }
-    });
-});
 
-// --- Visit Button Logic ---
-document.addEventListener('DOMContentLoaded', () => {
+        // Remove loading message
+        if (loadingMessage) {
+            loadingMessage.remove();
+        }
+
+        // Clear container
+        cardsContainer.innerHTML = '';
+
+        // If no items found
+        if (!items || items.length === 0) {
+            cardsContainer.innerHTML = '<div style="text-align: center; color: white; padding: 2rem;">No wishlist items found.</div>';
+            return;
+        }
+
+        // Create cards for each item
+        items.forEach(item => {
+            const card = createWishlistCard(item);
+            cardsContainer.appendChild(card);
+        });
+
+        // Initialize event listeners for the new cards
+        initializeCardEventListeners();
+
+    } catch (error) {
+        console.error('Error loading wishlist items:', error);
+        if (loadingMessage) {
+            loadingMessage.textContent = 'Error loading wishlist items. Please try again later.';
+            loadingMessage.style.color = '#e74c3c';
+        }
+    }
+}
+
+// --- Create Wishlist Card Element ---
+function createWishlistCard(item) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.setAttribute('data-id', item.id);
+    if (item.url) {
+        card.setAttribute('data-url', item.url);
+    }
+    if (item.image_url) {
+        card.setAttribute('data-image', item.image_url);
+    }
+
+    // Add image if available
+    if (item.image_url) {
+        const img = document.createElement('img');
+        img.src = item.image_url;
+        img.alt = item.title || 'Item image';
+        img.className = 'card-image';
+        img.onerror = function() {
+            this.style.display = 'none';
+        };
+        card.appendChild(img);
+    }
+
+    // Create a content wrapper for text and buttons
+    const contentWrapper = document.createElement('div');
+    contentWrapper.className = 'card-content';
+
+    // Add title
+    const title = document.createElement('h1');
+    title.textContent = item.title || 'Untitled Item';
+    contentWrapper.appendChild(title);
+
+    // Add description
+    if (item.description) {
+        const description = document.createElement('p');
+        description.className = 'Description';
+        description.textContent = item.description;
+        contentWrapper.appendChild(description);
+    }
+
+    // Add horizontal rule if there's a price
+    if (item.price) {
+        const hr = document.createElement('hr');
+        contentWrapper.appendChild(hr);
+
+        // Add price
+        const price = document.createElement('p');
+        price.className = 'price';
+        price.textContent = item.price;
+        contentWrapper.appendChild(price);
+    }
+
+    // Create a button wrapper
+    const buttonWrapper = document.createElement('div');
+    buttonWrapper.className = 'card-buttons';
+
+    // Add Visit button
+    if (item.url) {
+        const visitBtn = document.createElement('button');
+        visitBtn.className = 'btn visit-btn';
+        visitBtn.textContent = 'Visit';
+        buttonWrapper.appendChild(visitBtn);
+    }
+
+    // Add Reserve button
+    const reserveBtn = document.createElement('button');
+    reserveBtn.className = 'btn reserve-btn';
+    reserveBtn.textContent = item.is_reserved ? 'Reserved' : 'Reserve';
+    reserveBtn.disabled = item.is_reserved;
+    buttonWrapper.appendChild(reserveBtn);
+
+    contentWrapper.appendChild(buttonWrapper);
+
+    card.appendChild(contentWrapper);
+
+    return card;
+}
+
+// --- Initialize Event Listeners for Cards ---
+function initializeCardEventListeners() {
+    // Visit button listeners
     const visitButtons = document.querySelectorAll('.visit-btn');
-
     visitButtons.forEach(button => {
         button.addEventListener('click', (event) => {
             const card = event.target.closest('.card');
             const url = card.dataset.url;
 
             if (!url) {
-                console.error('Card is missing a data-url attribute!');
                 showNotification('No URL specified for this item.', 'error');
                 return;
             }
 
-            // Open the URL in a new tab
             window.open(url, '_blank');
         });
     });
-});
 
-// --- Reservation Logic ---
-document.addEventListener('DOMContentLoaded', () => {
+    // Reserve button listeners
     const reserveButtons = document.querySelectorAll('.reserve-btn');
-
-    // Fetch the initial reservation status for all items on the page
-    checkInitialReservationStatus();
-
     reserveButtons.forEach(button => {
         button.addEventListener('click', async (event) => {
             const card = event.target.closest('.card');
@@ -91,39 +182,13 @@ document.addEventListener('DOMContentLoaded', () => {
             await reserveItem(itemId, button);
         });
     });
-});
-
-async function checkInitialReservationStatus() {
-    const cards = document.querySelectorAll('.card[data-id]');
-    if (cards.length === 0) return;
-
-    // Collect all item IDs from the DOM
-    const itemIds = Array.from(cards).map(card => card.dataset.id);
-
-    try {
-        // Fetch the status for all items in a single query
-        const { data, error } = await _supabase
-            .from('wishlist_items')
-            .select('id, is_reserved')
-            .in('id', itemIds);
-
-        if (error) throw error;
-
-        // Update the UI for each reserved item
-        data.forEach(item => {
-            if (item.is_reserved) {
-                const card = document.querySelector(`.card[data-id="${item.id}"]`);
-                if (card) {
-                    const button = card.querySelector('.reserve-btn');
-                    button.textContent = 'Reserved';
-                    button.disabled = true;
-                }
-            }
-        });
-    } catch (error) {
-        console.error('Error fetching initial reservation status:', error.message);
-    }
 }
+
+// --- Main Initialization ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Load wishlist items from Supabase
+    loadWishlistItems();
+});
 
 async function reserveItem(itemId, button) {
     try {
